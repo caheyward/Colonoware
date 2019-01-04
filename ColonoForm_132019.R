@@ -10,10 +10,9 @@ library(dplyr)
 require(tidyr)
 library(ggplot2)
 
-# tell DBI which driver to use
+#get data
 
-
-#pull in SQL data
+#source(credentials.R)
 
 ColonowareData<-dbGetQuery(DRCcon,'
 
@@ -40,6 +39,15 @@ ColonowareData<-dbGetQuery(DRCcon,'
 
                            ')
 
-ColonowareFormData<-ColonowareData %>% mutate(Form = )
+#ColonowareFormData<-ColonowareData %>% mutate(Form = )
+
+#use case_when to create criteria for pasting ceramic form or mended form in a new form column
+ColonowareFormData <- ColonowareData %>%  
+     mutate(Form2 = case_when(
+       MendedForm == 'Not Mended' 
+       ~ paste(CeramicForm),
+      MendedForm != "Not Mended" 
+     ~ paste(MendedForm)
+   ))
 
 
